@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe Forem::View do
-  let!(:view) { FactoryGirl.create(:topic_view) }
+  let!(:view) { FactoryBot.create(:topic_view) }
 
   it "is valid with valid attributes" do
     expect(view).to be_valid

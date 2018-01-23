@@ -2,11 +2,11 @@ require 'spec_helper'
 
 describe "topics" do
 
-  let(:forum) { FactoryGirl.create(:forum) }
-  let(:user) { FactoryGirl.create(:user, :login => 'other_forem_user', :email => "bob@boblaw.com", :custom_avatar_url => 'avatar.png') }
-  let(:topic) { FactoryGirl.create(:approved_topic, :forum => forum, :user => user) }
-  let(:other_user) { FactoryGirl.create(:user, :login => 'other_forem_user') }
-  let(:other_topic) { FactoryGirl.create(:approved_topic, :subject => 'Another forem topic', :user => other_user, :forum => forum) }
+  let(:forum) { FactoryBot.create(:forum) }
+  let(:user) { FactoryBot.create(:user, :login => 'other_forem_user', :email => "bob@boblaw.com", :custom_avatar_url => 'avatar.png') }
+  let(:topic) { FactoryBot.create(:approved_topic, :forum => forum, :user => user) }
+  let(:other_user) { FactoryBot.create(:user, :login => 'other_forem_user') }
+  let(:other_topic) { FactoryBot.create(:approved_topic, :subject => 'Another forem topic', :user => other_user, :forum => forum) }
 
   context "not signed in" do
     it "cannot create a new topic" do
@@ -86,7 +86,7 @@ describe "topics" do
 
       # Regression test for #100
       it "can delete topics by others if an admin" do
-        topic.user = FactoryGirl.create(:user) # Assign alternate user
+        topic.user = FactoryBot.create(:user) # Assign alternate user
         topic.save
 
         user.update_attribute(:forem_admin, true)
@@ -129,7 +129,7 @@ describe "topics" do
 
   context "viewing a topic" do
     let(:topic) do
-      FactoryGirl.create(:approved_topic, :forum => forum, :user => user)
+      FactoryBot.create(:approved_topic, :forum => forum, :user => user)
     end
 
     it "is free for all" do

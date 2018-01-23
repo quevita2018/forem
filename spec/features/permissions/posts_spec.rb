@@ -1,9 +1,9 @@
 require 'spec_helper'
 
 describe 'post permissions' do
-  let(:forum) { FactoryGirl.create(:forum) }
-  let(:user) { FactoryGirl.create(:user) }
-  let(:topic) { FactoryGirl.create(:topic, :forum => forum, :user => user) }
+  let(:forum) { FactoryBot.create(:forum) }
+  let(:user) { FactoryBot.create(:user) }
+  let(:topic) { FactoryBot.create(:topic, :forum => forum, :user => user) }
 
 
   context "without permission to reply" do

@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :forum_view, :class => Forem::View do
     association :user
     association :viewable, :factory => :forum

@@ -1,5 +1,5 @@
 module Forem
-  class Post < ActiveRecord::Base
+  class Post < ApplicationRecord
     include Workflow
     include Forem::Concerns::NilUser
     include Forem::StateWorkflow

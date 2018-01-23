@@ -1,7 +1,7 @@
 require 'spec_helper'
 describe "moderation" do
-  let(:forum) { FactoryGirl.create(:forum) }
-  let(:user) { FactoryGirl.create(:user) }
+  let(:forum) { FactoryBot.create(:forum) }
+  let(:user) { FactoryBot.create(:user) }
 
   context "spam users" do
     before do
@@ -16,7 +16,7 @@ describe "moderation" do
     end
 
     it "cannot reply to a topic" do
-      topic = FactoryGirl.create(:approved_topic, :forum => forum)
+      topic = FactoryBot.create(:approved_topic, :forum => forum)
       visit forum_topic_path(forum, topic)
       within(".post") do
         click_link "Reply"

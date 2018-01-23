@@ -1,9 +1,9 @@
 module Forem
   class TopicsController < Forem::ApplicationController
     helper 'forem/posts'
-    before_filter :authenticate_forem_user, :except => [:show]
-    before_filter :find_forum
-    before_filter :block_spammers, :only => [:new, :create]
+    before_action :authenticate_forem_user, :except => [:show]
+    before_action :find_forum
+    before_action :block_spammers, :only => [:new, :create]
 
     def show
       if find_topic
@@ -125,7 +125,10 @@ module Forem
       if forem_user.forem_spammer?
         flash[:alert] = t('forem.general.flagged_for_spam') + ' ' +
                         t('forem.general.cannot_create_topic')
-        redirect_to :back
+        # Redirects the browser to the page that issued the request (the
+        # referrer) if possible, otherwise redirects to the provided default
+        # fallback location.
+        redirect_back(fallback_location: nil)
       end
     end
 

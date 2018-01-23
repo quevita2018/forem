@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe "forem/forums/_head.html.erb" do
   let(:user) { stub_model(User) }
-  let(:forum) { FactoryGirl.create(:forum) }
+  let(:forum) { FactoryBot.create(:forum) }
 
   before do
     allow(view).to receive_messages :forem_user => user

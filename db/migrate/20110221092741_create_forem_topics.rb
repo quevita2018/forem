@@ -1,4 +1,4 @@
-class CreateForemTopics < ActiveRecord::Migration
+class CreateForemTopics < ActiveRecord::Migration[5.1]
   def change
     create_table :forem_topics do |t|
       t.integer :forum_id

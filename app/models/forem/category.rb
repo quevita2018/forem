@@ -1,7 +1,7 @@
 require 'friendly_id'
 
 module Forem
-  class Category < ActiveRecord::Base
+  class Category < ApplicationRecord
     extend FriendlyId
     friendly_id :name, :use => [:slugged, :finders]
 

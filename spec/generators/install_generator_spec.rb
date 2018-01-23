@@ -42,8 +42,8 @@ describe Forem::Generators::InstallGenerator do
     expect(Forem::Forum.count).to eq(0)
     expect(Forem::Topic.count).to eq(0)
 
-    FactoryGirl.create(:user)
-    FactoryGirl.create(:category)
+    FactoryBot.create(:user)
+    FactoryBot.create(:category)
     Forem::Engine.load_seed
 
     expect(Forem::Forum.count).to eq(1)
@@ -63,10 +63,22 @@ describe Forem::Generators::InstallGenerator do
     load "#{Rails.root}/app/models/user.rb"
 
     # Generate a user so the Forem seed can run fully.
-    FactoryGirl.create(:user)
+    FactoryBot.create(:user)
     Forem::Engine.load_seed
 
     expect(Forem::Forum.count).to eq(1)
     expect(Forem::Topic.count).to eq(1)
+  end
+
+  # override original `Kernel#silence_stream` method, because it was deprecated
+  # https://github.com/gocardless/statesman/issues/229 and removed from rails.
+  def silence_stream(stream)
+    old_stream = stream.dup
+    stream.reopen(RbConfig::CONFIG['host_os'] =~ /mswin|mingw/ ? 'NUL:' : '/dev/null')
+    stream.sync = true
+    yield
+  ensure
+    stream.reopen(old_stream)
+    old_stream.close
   end
 end

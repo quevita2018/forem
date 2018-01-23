@@ -1,8 +1,8 @@
 require 'spec_helper'
 
 describe 'forum permissions' do
-  let!(:forum) { FactoryGirl.create(:forum) }
-  let!(:topic) { FactoryGirl.create(:topic, :forum => forum) }
+  let!(:forum) { FactoryBot.create(:forum) }
+  let!(:topic) { FactoryBot.create(:topic, :forum => forum) }
 
   it "can't see forums it can't access" do
     allow_any_instance_of(User).to receive(:can_read_forem_forums?).and_return(false)

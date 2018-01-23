@@ -1,4 +1,4 @@
-class AddIndexesToTopicsPostsViews < ActiveRecord::Migration
+class AddIndexesToTopicsPostsViews < ActiveRecord::Migration[5.1]
   def change
     add_index :forem_topics, :forum_id
     add_index :forem_topics, :user_id    

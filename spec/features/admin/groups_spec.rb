@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe 'groups' do
   before do
-    sign_in(FactoryGirl.create(:admin))
+    sign_in(FactoryBot.create(:admin))
   end
 
   context "creating a group" do
@@ -30,7 +30,7 @@ describe 'groups' do
 
   context "deleting a group" do
     before do
-      FactoryGirl.create(:group)
+      FactoryBot.create(:group)
       visit admin_groups_path
     end
 
@@ -42,8 +42,8 @@ describe 'groups' do
   
   context "removing user from the group" do
     before do
-      user = FactoryGirl.create(:user)
-      group = FactoryGirl.create(:group)
+      user = FactoryBot.create(:user)
+      group = FactoryBot.create(:group)
       group.members << user
       visit admin_group_path(Forem::Group.find_by_id(group.id))
     end

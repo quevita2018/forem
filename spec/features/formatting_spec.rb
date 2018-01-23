@@ -1,9 +1,9 @@
 require 'spec_helper'
 
 describe "When a post is displayed " do
-  let(:forum) { FactoryGirl.create(:forum) }
-  let(:topic) { FactoryGirl.create(:approved_topic, :forum => forum) }
-  let!(:post) { FactoryGirl.create(:approved_post, :topic => topic) }
+  let(:forum) { FactoryBot.create(:forum) }
+  let(:topic) { FactoryBot.create(:approved_topic, :forum => forum) }
+  let!(:post) { FactoryBot.create(:approved_post, :topic => topic) }
 
   describe "default formatter" do
     it "renders untagged plain text" do

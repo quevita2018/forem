@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe Forem::Forum do
-  let!(:forum) { FactoryGirl.create(:forum) }
+  let!(:forum) { FactoryBot.create(:forum) }
 
   it "is valid with valid attributes" do
     expect(forum).to be_valid
@@ -34,7 +34,7 @@ describe Forem::Forum do
 
   context "deletion" do
     it "deletes views" do
-      FactoryGirl.create(:forum_view, :viewable => forum)
+      FactoryBot.create(:forum_view, :viewable => forum)
       forum.destroy
       expect(Forem::View.exists?(:viewable_id => forum.id)).to be false
     end
@@ -59,11 +59,11 @@ describe Forem::Forum do
 
     # Regression tests + tests related to fix for #42
     context "last_post" do
-      let!(:visible_topic) { FactoryGirl.create(:topic, :forum => forum) }
-      let!(:hidden_topic) { FactoryGirl.create(:topic, :forum => forum, :hidden => true) }
+      let!(:visible_topic) { FactoryBot.create(:topic, :forum => forum) }
+      let!(:hidden_topic) { FactoryBot.create(:topic, :forum => forum, :hidden => true) }
 
-      let(:user) { FactoryGirl.create(:user) }
-      let(:admin) { FactoryGirl.create(:admin) }
+      let(:user) { FactoryBot.create(:user) }
+      let(:admin) { FactoryBot.create(:admin) }
 
 
       context "finding the last visible post for a user" do

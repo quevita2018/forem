@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :topic, :class => Forem::Topic do |t|
     t.subject "FIRST TOPIC"
     t.forum {|f| f.association(:forum) }

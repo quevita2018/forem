@@ -1,4 +1,4 @@
-class CreateForemMemberships < ActiveRecord::Migration
+class CreateForemMemberships < ActiveRecord::Migration[5.1]
   def change
     create_table :forem_memberships do |t|
       t.integer :group_id

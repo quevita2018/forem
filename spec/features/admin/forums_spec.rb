@@ -3,7 +3,7 @@ require 'spec_helper'
 describe "managing forums" do
   context "users not signed in as an admin" do
     before do
-      user = FactoryGirl.create(:user)
+      user = FactoryBot.create(:user)
       sign_in(user)
     end
 
@@ -14,9 +14,9 @@ describe "managing forums" do
   end
 
   context "users signed in as admins" do
-    let!(:forum) { FactoryGirl.create(:forum, :title => "Original Name") }
+    let!(:forum) { FactoryBot.create(:forum, :title => "Original Name") }
     before do
-      admin = FactoryGirl.create(:admin)
+      admin = FactoryBot.create(:admin)
       sign_in(admin)
       visit root_path
       # Ensure that people can navigate to this area.
@@ -30,7 +30,7 @@ describe "managing forums" do
       end
 
       it "is valid with title and description" do
-        category = FactoryGirl.create(:category)
+        category = FactoryBot.create(:category)
         fill_in "Title", :with => "FIRST FORUM"
         fill_in "Description", :with => "The first placeholder forum."
 

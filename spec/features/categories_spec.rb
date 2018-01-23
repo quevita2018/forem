@@ -1,11 +1,11 @@
 require 'spec_helper'
 
 describe 'categories' do
-  let!(:category_1) { FactoryGirl.create(:category) }
-  let!(:forum_1) { FactoryGirl.create(:forum, :category => category_1, :title => "Category 1 Forum") }
+  let!(:category_1) { FactoryBot.create(:category) }
+  let!(:forum_1) { FactoryBot.create(:forum, :category => category_1, :title => "Category 1 Forum") }
 
-  let!(:category_2) { FactoryGirl.create(:category) }
-  let!(:forum_2) { FactoryGirl.create(:forum, :category => category_2, :title => "Category 2 Forum") }
+  let!(:category_2) { FactoryBot.create(:category) }
+  let!(:forum_2) { FactoryBot.create(:forum, :category => category_2, :title => "Category 2 Forum") }
 
   it "sees categorised forums" do
     visit forums_path

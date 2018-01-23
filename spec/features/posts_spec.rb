@@ -1,9 +1,9 @@
 require 'spec_helper'
 
 describe "posts" do
-  let(:forum) { FactoryGirl.create(:forum) }
-  let(:user) { FactoryGirl.create(:user) }
-  let(:topic) { FactoryGirl.create(:approved_topic, :forum => forum, :forem_user => user) }
+  let(:forum) { FactoryBot.create(:forum) }
+  let(:user) { FactoryBot.create(:user) }
+  let(:topic) { FactoryBot.create(:approved_topic, :forum => forum, :forem_user => user) }
 
   context "not signed in users" do
     it "cannot begin to post a reply" do
@@ -85,8 +85,8 @@ describe "posts" do
 
     context "quoting" do
       it "cannot quote deleted post" do
-        other_user = FactoryGirl.create(:user, :login => 'other_forem_user', :email => "maryanne@boblaw.com")
-        topic.posts << FactoryGirl.build(:approved_post, :user => other_user)
+        other_user = FactoryBot.create(:user, :login => 'other_forem_user', :email => "maryanne@boblaw.com")
+        topic.posts << FactoryBot.build(:approved_post, :user => other_user)
         @second_post = topic.posts[1]
 
         visit forum_topic_path(forum, topic)
@@ -102,8 +102,8 @@ describe "posts" do
 
     context "editing posts in topics" do
       before do
-        other_user = FactoryGirl.create(:user, :login => 'other_forem_user', :email => "maryanne@boblaw.com")
-        topic.posts << FactoryGirl.build(:approved_post, :user => other_user)
+        other_user = FactoryBot.create(:user, :login => 'other_forem_user', :email => "maryanne@boblaw.com")
+        topic.posts << FactoryBot.build(:approved_post, :user => other_user)
         @second_post = topic.posts[1]
       end
 
@@ -148,7 +148,7 @@ describe "posts" do
     context "deleting posts in topics" do
       context "topic contains two posts" do
         before do
-          topic.posts << FactoryGirl.build(:approved_post, :created_at => 1.day.from_now, :user => FactoryGirl.create(:user, :login => 'other_forem_user', :email => "maryanne@boblaw.com"))
+          topic.posts << FactoryBot.build(:approved_post, :created_at => 1.day.from_now, :user => FactoryBot.create(:user, :login => 'other_forem_user', :email => "maryanne@boblaw.com"))
 
         end
 

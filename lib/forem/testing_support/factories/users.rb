@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :user do |f|
     f.login "forem_user"
     f.email { "bob#{rand(100000)}@boblaw.com" }

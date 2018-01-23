@@ -1,4 +1,4 @@
-class AddPendingReviewToForemPosts < ActiveRecord::Migration
+class AddPendingReviewToForemPosts < ActiveRecord::Migration[5.1]
   def change
     add_column :forem_posts, :pending_review, :boolean, :default => true
 

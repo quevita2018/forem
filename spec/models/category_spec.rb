@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe Forem::Category do
-  let!(:category) { FactoryGirl.create(:category) }
+  let!(:category) { FactoryBot.create(:category) }
 
   it "is valid with valid attributes" do
     expect(category).to be_valid

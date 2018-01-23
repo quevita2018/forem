@@ -1,4 +1,4 @@
-class AddFriendlyIdSlugs < ActiveRecord::Migration
+class AddFriendlyIdSlugs < ActiveRecord::Migration[5.1]
   def change
     add_column :forem_forums, :slug, :string
     add_index :forem_forums, :slug, :unique => true

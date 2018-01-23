@@ -4,8 +4,8 @@ require 'timecop'
 describe Forem::Post do
   let!(:forum) { stub_model(Forem::Forum) }
   let!(:topic) { stub_model(Forem::Topic, :forum => forum) }
-  let!(:post) { FactoryGirl.create(:post, :topic => topic) }
-  let(:reply) { FactoryGirl.create(:post, :reply_to => post, :topic => topic) }
+  let!(:post) { FactoryBot.create(:post, :topic => topic) }
+  let(:reply) { FactoryBot.create(:post, :reply_to => post, :topic => topic) }
 
   context "upon deletion" do
     it "clears the reply_to_id for all replies" do
@@ -22,8 +22,8 @@ describe Forem::Post do
     end
 
     it "doesn't subscribe the current poster if forem_auto_subscribe is set to false" do
-      user_not_autosubscribed = FactoryGirl.create(:not_autosubscribed)
-      post = FactoryGirl.build(:approved_post, :topic => topic, :user => user_not_autosubscribed)
+      user_not_autosubscribed = FactoryBot.create(:not_autosubscribed)
+      post = FactoryBot.build(:approved_post, :topic => topic, :user => user_not_autosubscribed)
 
       expect(topic.subscriptions.last.subscriber).not_to eq(post.user)
     end
@@ -45,20 +45,20 @@ describe Forem::Post do
     end
 
     it "only emails other subscribers" do
-      user_2 = FactoryGirl.create(:user)
+      user_2 = FactoryBot.create(:user)
       expect_any_instance_of(Forem::Subscription).to receive(:send_notification).once
-      post = FactoryGirl.create(:post, :topic => topic, :user => user_2)
+      post = FactoryBot.create(:post, :topic => topic, :user => user_2)
       post.approve!
     end
 
     it "sets topics last_post_at value" do
-      new_topic = FactoryGirl.create(:topic)
+      new_topic = FactoryBot.create(:topic)
       new_post = new_topic.posts.last
       new_topic.reload
       expect(new_topic.last_post_at.to_s).to eq(new_post.created_at.to_s)
       # Regression test for #255. Issue introduced by 46345c4
       Timecop.freeze(Time.now + 1.minute) do
-        new_post_2 = FactoryGirl.create(:post, :topic => new_topic)
+        new_post_2 = FactoryBot.create(:post, :topic => new_topic)
         new_topic.reload
         expect(new_topic.last_post_at.to_s).to eq(new_post_2.created_at.to_s)
       end
@@ -71,7 +71,7 @@ describe Forem::Post do
     end
 
     it "checks for post owner" do
-      admin = FactoryGirl.create(:admin)
+      admin = FactoryBot.create(:admin)
       assert post.owner_or_admin?(post.user)
       assert post.owner_or_admin?(admin)
     end

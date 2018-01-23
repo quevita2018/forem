@@ -8,7 +8,7 @@ module Forem
         avatar_url user.forem_email, options
       end
 
-      image_tag image, :alt => "Avatar" if image.present?
+      image_tag image, alt: "Avatar", skip_pipeline: true if image.present?
     end
 
     def avatar_url(email, options = {})
@@ -30,7 +30,7 @@ module Forem
       when image
         request.protocol +
           request.host_with_port +
-          path_to_image(image)
+          path_to_image(image, skip_pipeline: true)
       else
         Forem.default_gravatar
       end

@@ -1,5 +1,5 @@
 module Forem
-  class View < ActiveRecord::Base
+  class View < ApplicationRecord
     before_create :set_viewed_at_to_now
 
     belongs_to :viewable, :polymorphic => true

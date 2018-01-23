@@ -1,6 +1,6 @@
 source "https://rubygems.org"
 
-gem 'forem-theme-base', :git => "git://github.com/radar/forem-theme-base", :branch => "master"
+# gem 'forem-theme-base', :git => "git://github.com/radar/forem-theme-base", :branch => "master"
 
 gemspec
 
@@ -26,8 +26,4 @@ group :test do
     gem "activerecord-jdbcsqlite3-adapter", :require => false
     gem "forem-kramdown", :github => "phlipper/forem-kramdown", :branch => "master"
   end
-end
-
-if RUBY_VERSION < '1.9.2'
-  gem 'nokogiri', '~> 1.5.9'
 end

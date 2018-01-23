@@ -1,8 +1,8 @@
 require 'spec_helper'
 
 describe "moderation" do
-  let(:forum) { FactoryGirl.create(:forum) }
-  let(:user) { FactoryGirl.create(:user) }
+  let(:forum) { FactoryBot.create(:forum) }
+  let(:user) { FactoryBot.create(:user) }
 
   context "with moderation enabled" do
     context "as a new user" do
@@ -22,7 +22,7 @@ describe "moderation" do
 
 
       it "has their first post moderated" do
-        topic = FactoryGirl.create(:topic, :forum => forum)
+        topic = FactoryBot.create(:topic, :forum => forum)
         topic.approve!
         visit forum_topic_path(forum, topic)
         within(".post") do
@@ -43,7 +43,7 @@ describe "moderation" do
       end
 
       it "cannot see a unapproved topic by another user" do
-        topic = FactoryGirl.create(:topic, :forum => forum, :subject => "In review")
+        topic = FactoryBot.create(:topic, :forum => forum, :subject => "In review")
         visit forum_path(forum)
         expect(page).not_to have_content("In review")
 
@@ -52,8 +52,8 @@ describe "moderation" do
       end
 
       it "cannot see an unapproved posts by another user" do
-        topic = FactoryGirl.create(:topic, :forum => forum)
-        post = FactoryGirl.create(:post, :topic => topic, :text => "BUY VIAGRA")
+        topic = FactoryBot.create(:topic, :forum => forum)
+        post = FactoryBot.create(:post, :topic => topic, :text => "BUY VIAGRA")
         topic.approve!
 
         visit forum_topic_path(forum, topic)
@@ -86,7 +86,7 @@ describe "moderation" do
       end
 
       it "does not have their first post moderated" do
-        topic = FactoryGirl.create(:topic, :forum => forum)
+        topic = FactoryBot.create(:topic, :forum => forum)
         visit forum_topic_path(forum, topic)
         within(".post") do
           click_link "Reply"

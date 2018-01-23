@@ -1,4 +1,4 @@
-class AddCategoryIdToForums < ActiveRecord::Migration
+class AddCategoryIdToForums < ActiveRecord::Migration[5.1]
   def change
     add_column :forem_forums, :category_id, :integer
 

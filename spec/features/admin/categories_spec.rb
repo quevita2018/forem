@@ -3,7 +3,7 @@ require 'spec_helper'
 describe "managing categories" do
   context "users not signed in as an admin" do
     before do
-      user = FactoryGirl.create(:user)
+      user = FactoryBot.create(:user)
       sign_in(user)
     end
 
@@ -15,7 +15,7 @@ describe "managing categories" do
 
   context "users signed in as admins" do
     before do
-      admin = FactoryGirl.create(:admin)
+      admin = FactoryBot.create(:admin)
       sign_in(admin)
       visit root_path
       # Ensure that people can navigate to this area.

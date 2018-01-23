@@ -1,4 +1,4 @@
-class AddHiddenToForemTopics < ActiveRecord::Migration
+class AddHiddenToForemTopics < ActiveRecord::Migration[5.1]
   def change
     add_column :forem_topics, :hidden, :boolean, :default => false
   end

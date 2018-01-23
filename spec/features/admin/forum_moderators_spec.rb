@@ -2,12 +2,12 @@ require 'spec_helper'
 
 describe "forum moderators" do
   before do
-    sign_in(FactoryGirl.create(:admin))
-    user = FactoryGirl.create(:user, :login => "bob")
-    group = FactoryGirl.create(:group, :name => "The Mods")
+    sign_in(FactoryBot.create(:admin))
+    user = FactoryBot.create(:user, :login => "bob")
+    group = FactoryBot.create(:group, :name => "The Mods")
     group.members << user
 
-    forum = FactoryGirl.create(:forum)
+    forum = FactoryBot.create(:forum)
 
     visit edit_admin_forum_path(forum)
   end

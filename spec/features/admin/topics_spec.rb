@@ -1,14 +1,14 @@
 require 'spec_helper'
 
 describe "topics" do
-  let(:category) { FactoryGirl.create(:category) }
-  let(:forum) { FactoryGirl.create(:forum) }
-  let(:topic) { FactoryGirl.create(:approved_topic, :forum => forum) }
-  let(:other_topic) { FactoryGirl.create(:topic, :forum => forum, :subject => "SECOND TOPIC") }
-  let(:other_forum) {FactoryGirl.create(:forum, :title => "Second Forum", :description => "A Forum", :category_id => category.id )}
+  let(:category) { FactoryBot.create(:category) }
+  let(:forum) { FactoryBot.create(:forum) }
+  let(:topic) { FactoryBot.create(:approved_topic, :forum => forum) }
+  let(:other_topic) { FactoryBot.create(:topic, :forum => forum, :subject => "SECOND TOPIC") }
+  let(:other_forum) {FactoryBot.create(:forum, :title => "Second Forum", :description => "A Forum", :category_id => category.id )}
 
   before do
-    admin = FactoryGirl.create(:admin)
+    admin = FactoryBot.create(:admin)
     sign_in(admin)
   end
 

@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Forem::Subscription do
   let(:subscription) do
-    FactoryGirl.create(:subscription)
+    FactoryBot.create(:subscription)
   end
 
   it "is valid with valid attributes" do
@@ -21,7 +21,7 @@ describe Forem::Subscription do
     end
 
     let(:topic) { Forem::Topic.new(attributes) }
-    let(:subscription) { FactoryGirl.create(:subscription) }
+    let(:subscription) { FactoryBot.create(:subscription) }
     let(:mail_class) { Forem::SubscriptionMailer.topic_reply(subscription.topic.posts.first.id, subscription.subscriber.id).class }
 
     it "creates a subscription when a topic is created" do

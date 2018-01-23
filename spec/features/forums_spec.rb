@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe "forums" do
-  let!(:forum) { FactoryGirl.create(:forum) }
+  let!(:forum) { FactoryBot.create(:forum) }
 
   it "listing all" do
     visit forums_path
@@ -42,11 +42,11 @@ describe "forums" do
 
   context "visiting a forum" do
     before do
-      @topic_1 = FactoryGirl.create(:approved_topic, :subject => "Unpinned", :forum => forum)
-      @topic_2 = FactoryGirl.create(:approved_topic, :subject => "Most Recent", :forum => forum)
+      @topic_1 = FactoryBot.create(:approved_topic, :subject => "Unpinned", :forum => forum)
+      @topic_2 = FactoryBot.create(:approved_topic, :subject => "Most Recent", :forum => forum)
       @topic_2.update_attribute(:last_post_at, Time.now + 30.seconds)
-      @topic_3 = FactoryGirl.create(:approved_topic, :subject => "PINNED!", :forum => forum, :pinned => true)
-      @topic_4 = FactoryGirl.create(:approved_topic, :subject => "HIDDEN!", :forum => forum, :hidden => true)
+      @topic_3 = FactoryBot.create(:approved_topic, :subject => "PINNED!", :forum => forum, :pinned => true)
+      @topic_4 = FactoryBot.create(:approved_topic, :subject => "HIDDEN!", :forum => forum, :hidden => true)
       visit forum_path(forum)
     end
 
@@ -64,15 +64,15 @@ describe "forums" do
 
     context "when logged in" do
       before do
-        @user = FactoryGirl.create(:user)
+        @user = FactoryBot.create(:user)
         sign_in(@user)
       end
 
       # Regression test for #272
       context "when forem_state is pending_review" do
-        let(:topic) { FactoryGirl.create(:topic, :forum => forum, :user => @user) }
-        let(:other_user) { FactoryGirl.create(:user, :login => "other_user") }
-        let(:other_topic) { FactoryGirl.create(:topic, :subject => "topic started by other_user with forem_state pending_review", :forum => forum, :user => other_user) }
+        let(:topic) { FactoryBot.create(:topic, :forum => forum, :user => @user) }
+        let(:other_user) { FactoryBot.create(:user, :login => "other_user") }
+        let(:other_topic) { FactoryBot.create(:topic, :subject => "topic started by other_user with forem_state pending_review", :forum => forum, :user => other_user) }
 
         it "should show topic if logged in user has started topic" do
           visit forum_path(forum)

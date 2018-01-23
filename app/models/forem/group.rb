@@ -1,5 +1,5 @@
 module Forem
-  class Group < ActiveRecord::Base
+  class Group < ApplicationRecord
     validates :name, :presence => true
 
     has_many :memberships
