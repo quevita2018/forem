@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'friendly_id'
 
 module Forem
@@ -5,16 +7,16 @@ module Forem
     include Forem::Concerns::Viewable
 
     extend FriendlyId
-    friendly_id :name, :use => [:slugged, :finders]
+    friendly_id :name, use: %i[slugged finders]
 
     belongs_to :category
 
-    has_many :topics,     :dependent => :destroy
-    has_many :posts,      :through => :topics, :dependent => :destroy
+    has_many :topics,     dependent: :destroy
+    has_many :posts,      through: :topics, dependent: :destroy
     has_many :moderator_groups
-    has_many :moderators, :through => :moderator_groups, :source => :group
+    has_many :moderators, through: :moderator_groups, source: :group
 
-    validates :category, :name, :description, :presence => true
+    validates :category, :name, :description, presence: true
     validates :position, numericality: { only_integer: true }
 
     alias_attribute :title, :name

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateForemGroups < ActiveRecord::Migration[5.1]
   def change
     create_table :forem_groups do |t|

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateForemTopics < ActiveRecord::Migration[5.1]
   def change
     create_table :forem_topics do |t|
@@ -5,7 +7,7 @@ class CreateForemTopics < ActiveRecord::Migration[5.1]
       t.integer :user_id
       t.string :subject
 
-      t.timestamps :null => true
+      t.timestamps null: true
     end
   end
 end

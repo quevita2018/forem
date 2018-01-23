@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Forem
   module FormattingHelper
     # override with desired markup formatter, e.g. textile or markdown
@@ -13,7 +15,7 @@ module Forem
       if Forem.formatter && Forem.formatter.respond_to?(:blockquote)
         Forem.formatter.blockquote(as_sanitized_text(text)).html_safe
       else
-         "<blockquote>#{(h(text))}</blockquote>\n\n".html_safe
+        "<blockquote>#{h(text)}</blockquote>\n\n".html_safe
       end
     end
 

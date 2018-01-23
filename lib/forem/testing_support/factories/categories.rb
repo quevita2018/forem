@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 FactoryBot.define do
-  factory :category, :class => Forem::Category do |f|
-    f.name "Test Category"
+  factory :category, class: Forem::Category do |f|
+    f.name 'Test Category'
   end
 end

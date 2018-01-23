@@ -1,10 +1,12 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
-describe "moderation" do
+describe 'moderation' do
   let(:forum) { FactoryBot.create(:forum) }
   let(:user) { FactoryBot.create(:user) }
 
-  context "of posts" do
-    let!(:moderator) { FactoryBot.create(:user, :login => "moderator") }
+  context 'of posts' do
+    let!(:moderator) { FactoryBot.create(:user, login: 'moderator') }
     let!(:group) do
       group = FactoryBot.create(:group)
       group.members << moderator
@@ -13,8 +15,8 @@ describe "moderation" do
     end
 
     let!(:forum) { FactoryBot.create(:forum) }
-    let!(:topic) { FactoryBot.create(:topic, :forum => forum) }
-    let!(:post) { FactoryBot.create(:post, :topic => topic) }
+    let!(:topic) { FactoryBot.create(:topic, forum: forum) }
+    let!(:post) { FactoryBot.create(:post, topic: topic) }
 
     before do
       forum.moderators << group
@@ -22,43 +24,42 @@ describe "moderation" do
       topic.approve!
     end
 
-    context "mass moderation" do
-      it "can approve a post by a new user" do
-
+    context 'mass moderation' do
+      it 'can approve a post by a new user' do
         visit forum_path(forum)
-        click_link "Moderation Tools"
+        click_link 'Moderation Tools'
 
-        choose "Approve"
-        first(:button, "Moderate").click
+        choose 'Approve'
+        first(:button, 'Moderate').click
 
-        flash_notice!("The selected posts have been moderated.")
+        flash_notice!('The selected posts have been moderated.')
         post.reload
         expect(post).to be_approved
-        expect(post.user.reload.forem_state).to eq("approved")
+        expect(post.user.reload.forem_state).to eq('approved')
       end
 
-      it "can mark a post as spam" do
+      it 'can mark a post as spam' do
         visit forum_path(forum)
-        click_link "Moderation Tools"
+        click_link 'Moderation Tools'
 
-        choose "Spam"
-        first(:button, "Moderate").click
+        choose 'Spam'
+        first(:button, 'Moderate').click
 
-        flash_notice!("The selected posts have been moderated.")
+        flash_notice!('The selected posts have been moderated.')
         post.reload
         expect(post).to be_spam
-        expect(post.user.reload.forem_state).to eq("spam")
+        expect(post.user.reload.forem_state).to eq('spam')
       end
     end
 
-    context "singular moderation" do
-      it "can approve a post by a new user" do
+    context 'singular moderation' do
+      it 'can approve a post by a new user' do
         visit forum_topic_path(forum, topic)
-        choose "Approve"
-        click_button "Moderate"
+        choose 'Approve'
+        click_button 'Moderate'
 
-        flash_notice!("The selected posts have been moderated.")
-        expect(post.user.reload.forem_state).to eq("approved")
+        flash_notice!('The selected posts have been moderated.')
+        expect(post.user.reload.forem_state).to eq('approved')
       end
     end
   end

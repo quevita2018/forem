@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module SignInHelpers
   def sign_in(user)
     login_as(user)
@@ -10,5 +12,5 @@ end
 
 RSpec.configure do |c|
   c.include Warden::Test::Helpers
-  c.include SignInHelpers, :type => :request
+  c.include SignInHelpers, type: :request
 end

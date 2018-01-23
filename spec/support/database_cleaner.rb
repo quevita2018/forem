@@ -1,12 +1,14 @@
-require "database_cleaner"
+# frozen_string_literal: true
+
+require 'database_cleaner'
 
 RSpec.configure do |config|
   config.before(:each) do |example|
-    if example.metadata[:js]
-      DatabaseCleaner.strategy = :truncation
-    else
-      DatabaseCleaner.strategy = :transaction
-    end
+    DatabaseCleaner.strategy = if example.metadata[:js]
+                                 :truncation
+                               else
+                                 :transaction
+                               end
   end
 
   config.before(:each) do

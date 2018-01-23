@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 require 'generators/forem/install_generator'
 
@@ -16,10 +18,10 @@ describe Forem::Generators::InstallGenerator do
     Dir["#{Rails.root}/db/migrate/*.rb"].sort
   end
 
-  it "copies over the migrations" do
+  it 'copies over the migrations' do
     expect(migrations).to be_empty
     silence_stream(STDOUT) do
-      described_class.start(["--user-class=User", "--no-migrate", "--current-user-helper=current_user"], :destination => Rails.root)
+      described_class.start(['--user-class=User', '--no-migrate', '--current-user-helper=current_user'], destination: Rails.root)
     end
 
     # Ensure forem migrations have been copied over
@@ -27,18 +29,18 @@ describe Forem::Generators::InstallGenerator do
 
     # Ensure initializer has been created
     forem_initializer = File.readlines("#{Rails.root}/config/initializers/forem.rb")
-    expect(forem_initializer[0].strip).to eq(%q{Forem.user_class = "User"})
+    expect(forem_initializer[2].strip).to eq("Forem.user_class = 'User'")
 
     # Ensure forem_user is added to ApplicationController
     application_controller = File.read("#{Rails.root}/app/controllers/application_controller.rb")
-    expected_forem_user_method = %Q{def forem_user
+    expected_forem_user_method = %(def forem_user
     current_user
   end
-  helper_method :forem_user}
+  helper_method :forem_user)
     expect(application_controller).to include(expected_forem_user_method)
   end
 
-  it "seeds the database" do
+  it 'seeds the database' do
     expect(Forem::Forum.count).to eq(0)
     expect(Forem::Topic.count).to eq(0)
 

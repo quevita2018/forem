@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 FactoryBot.define do
-  factory :subscription, :class => Forem::Subscription do
-    association :subscriber, :factory => :user
+  factory :subscription, class: Forem::Subscription do
+    association :subscriber, factory: :user
     association :topic
   end
 end

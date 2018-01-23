@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Fix for #185 and build issues
 require 'active_support/core_ext/kernel/singleton_class'
 
@@ -17,7 +19,6 @@ module Forem
                  :user_profile_links, :email_from_address, :autocomplete_field,
                  :per_page, :sign_in_path, :moderate_first_post, :layout
 
-
   class << self
     def base_path
       @@base_path ||= Rails.application.routes.named_routes[:forem].path
@@ -28,10 +29,10 @@ module Forem
         extend Forem::Autocomplete
         include Forem::DefaultPermissions
 
-        has_many :forem_posts, :class_name => "Forem::Post", :foreign_key => "user_id"
-        has_many :forem_topics, :class_name => "Forem::Topic", :foreign_key => "user_id"
-        has_many :forem_memberships, :class_name => "Forem::Membership", :foreign_key => "member_id"
-        has_many :forem_groups, :through => :forem_memberships, :class_name => "Forem::Group", :source => :group
+        has_many :forem_posts, class_name: 'Forem::Post', foreign_key: 'user_id'
+        has_many :forem_topics, class_name: 'Forem::Topic', foreign_key: 'user_id'
+        has_many :forem_memberships, class_name: 'Forem::Membership', foreign_key: 'member_id'
+        has_many :forem_groups, through: :forem_memberships, class_name: 'Forem::Group', source: :group
 
         def forem_moderate_posts?
           Forem.moderate_first_post && !forem_approved_to_post?
@@ -47,15 +48,19 @@ module Forem
         end
 
         # Using +to_s+ by default for backwards compatibility
-        def forem_name
-          to_s
-        end unless method_defined? :forem_name
+        unless method_defined? :forem_name
+          def forem_name
+            to_s
+          end
+        end
 
         # Using +email+ by default for backwards compatibility. This attribute
         # it's optional
-        def forem_email
-          try :email
-        end unless method_defined? :forem_email
+        unless method_defined? :forem_email
+          def forem_email
+            try :email
+          end
+        end
       end
     end
 
@@ -65,7 +70,7 @@ module Forem
     end
 
     def autocomplete_field
-      @@autocomplete_field || "email"
+      @@autocomplete_field || 'email'
     end
 
     def per_page
@@ -74,8 +79,8 @@ module Forem
 
     def user_class
       if @@user_class.is_a?(Class)
-        raise "You can no longer set Forem.user_class to be a class. Please use a string instead.\n\n " +
-              "See https://github.com/radar/forem/issues/88 for more information."
+        raise "You can no longer set Forem.user_class to be a class. Please use a string instead.\n\n " \
+              'See https://github.com/radar/forem/issues/88 for more information.'
       elsif @@user_class.is_a?(String)
         begin
           Object.const_get(@@user_class)
@@ -86,7 +91,7 @@ module Forem
     end
 
     def layout
-      @@layout || "forem/default"
+      @@layout || 'forem/default'
     end
   end
 end

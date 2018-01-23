@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateForemSubscriptions < ActiveRecord::Migration[5.1]
   def change
     create_table :forem_subscriptions do |t|

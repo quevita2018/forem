@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 describe 'groups' do
@@ -5,42 +7,42 @@ describe 'groups' do
     sign_in(FactoryBot.create(:admin))
   end
 
-  context "creating a group" do
+  context 'creating a group' do
     before do
       visit root_path
-      click_link "Admin Area"
-      click_link "Manage Groups"
-      click_link "New Group"
+      click_link 'Admin Area'
+      click_link 'Manage Groups'
+      click_link 'New Group'
     end
 
-    it "is valid with a name" do
-      fill_in "Name", :with => "Special People"
+    it 'is valid with a name' do
+      fill_in 'Name', with: 'Special People'
       click_button 'Create Group'
-      flash_notice!("The group was successfully created.")
+      flash_notice!('The group was successfully created.')
       expect(page.current_path).to eq(admin_group_path(
-        Forem::Group.find_by_name("Special People")
+                                        Forem::Group.find_by_name('Special People')
       ))
     end
 
-    it "is invalid without a name" do
-      click_button "Create Group"
-      flash_alert!("Group could not be created.")
+    it 'is invalid without a name' do
+      click_button 'Create Group'
+      flash_alert!('Group could not be created.')
     end
   end
 
-  context "deleting a group" do
+  context 'deleting a group' do
     before do
       FactoryBot.create(:group)
       visit admin_groups_path
     end
 
     specify do
-      click_link "Delete"
-      flash_notice!("The selected group has been deleted.")
+      click_link 'Delete'
+      flash_notice!('The selected group has been deleted.')
     end
   end
-  
-  context "removing user from the group" do
+
+  context 'removing user from the group' do
     before do
       user = FactoryBot.create(:user)
       group = FactoryBot.create(:group)
@@ -49,8 +51,8 @@ describe 'groups' do
     end
 
     specify do
-      click_link "Remove member"
-      flash_notice!("The selected user has been removed from the group.")
+      click_link 'Remove member'
+      flash_notice!('The selected user has been removed from the group.')
     end
   end
 end

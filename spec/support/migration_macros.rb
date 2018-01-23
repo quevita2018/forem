@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 module Forem
   module MigrationMacros
     def cleanup_migrations!
       Dir.chdir(Rails.root) do
-        FileUtils.rm_rf("db/migrate")
+        FileUtils.rm_rf('db/migrate')
       end
     end
   end

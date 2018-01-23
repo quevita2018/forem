@@ -1,9 +1,11 @@
+# frozen_string_literal: true
+
 module Forem
   class TopicsController < Forem::ApplicationController
     helper 'forem/posts'
-    before_action :authenticate_forem_user, :except => [:show]
+    before_action :authenticate_forem_user, except: [:show]
     before_action :find_forum
-    before_action :block_spammers, :only => [:new, :create]
+    before_action :block_spammers, only: %i[new create]
 
     def show
       if find_topic
@@ -59,41 +61,42 @@ module Forem
     protected
 
     def topic_params
-      params.require(:topic).permit(:subject, :posts_attributes => [[:text]])
+      params.require(:topic).permit(:subject, posts_attributes: [[:text]])
     end
-    
+
     def create_successful
-      redirect_to [@forum, @topic], :notice => t("forem.topic.created")
+      redirect_to [@forum, @topic], notice: t('forem.topic.created')
     end
 
     def create_unsuccessful
       flash.now.alert = t('forem.topic.not_created')
-      render :action => 'new'
+      render action: 'new'
     end
 
     def destroy_successful
-      flash[:notice] = t("forem.topic.deleted")
+      flash[:notice] = t('forem.topic.deleted')
 
       redirect_to @topic.forum
     end
 
     def destroy_unsuccessful
-      flash.alert = t("forem.topic.cannot_delete")
+      flash.alert = t('forem.topic.cannot_delete')
 
       redirect_to @topic.forum
     end
 
     def subscribe_successful
-      flash[:notice] = t("forem.topic.subscribed")
+      flash[:notice] = t('forem.topic.subscribed')
       redirect_to forum_topic_url(@topic.forum, @topic)
     end
 
     def unsubscribe_successful
-      flash[:notice] = t("forem.topic.unsubscribed")
+      flash[:notice] = t('forem.topic.unsubscribed')
       redirect_to forum_topic_url(@topic.forum, @topic)
     end
 
     private
+
     def find_forum
       @forum = Forem::Forum.friendly.find(params[:forum_id])
       authorize! :read, @forum
@@ -108,13 +111,11 @@ module Forem
     end
 
     def find_topic
-      begin
-        @topic = forum_topics(@forum, forem_user).friendly.find(params[:id])
-        authorize! :read, @topic
-      rescue ActiveRecord::RecordNotFound
-        flash.alert = t("forem.topic.not_found")
-        redirect_to @forum and return
-      end
+      @topic = forum_topics(@forum, forem_user).friendly.find(params[:id])
+      authorize! :read, @topic
+    rescue ActiveRecord::RecordNotFound
+      flash.alert = t('forem.topic.not_found')
+      redirect_to(@forum) && return
     end
 
     def register_view(topic, user)

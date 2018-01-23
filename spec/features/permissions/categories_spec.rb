@@ -1,17 +1,19 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
-describe "category permissions" do
+describe 'category permissions' do
   let!(:category) { FactoryBot.create(:category) }
-  let!(:forum) { FactoryBot.create(:forum, :category => category) }
+  let!(:forum) { FactoryBot.create(:forum, category: category) }
 
-  context "without ability to read a category" do
+  context 'without ability to read a category' do
     before do
       allow_any_instance_of(User).to receive(:can_read_forem_category?).and_return(false)
     end
 
     it "can't see the categories it can't access" do
       visit forums_path
-      expect(page).not_to have_content("Welcome to Forem!")
+      expect(page).not_to have_content('Welcome to Forem!')
     end
 
     it "can't visit a particular category" do
@@ -20,14 +22,12 @@ describe "category permissions" do
     end
   end
 
-  context "with default permissions" do
-    it "can see the category" do
+  context 'with default permissions' do
+    it 'can see the category' do
       visit root_path
-      within(".category h2") do
-        expect(page).to have_content("Test Category")
+      within('.category h2') do
+        expect(page).to have_content('Test Category')
       end
     end
   end
-
-
 end

@@ -1,14 +1,16 @@
+# frozen_string_literal: true
+
 module Forem
   module PostsHelper
     def forem_avatar(user, options = {})
       image = if Forem.avatar_user_method
-        # Try to use the user's custom avatar method
-        user.try Forem.avatar_user_method.to_sym
-      else
-        avatar_url user.forem_email, options
+                # Try to use the user's custom avatar method
+                user.try Forem.avatar_user_method.to_sym
+              else
+                avatar_url user.forem_email, options
       end
 
-      image_tag image, alt: "Avatar", skip_pipeline: true if image.present?
+      image_tag image, alt: 'Avatar', skip_pipeline: true if image.present?
     end
 
     def avatar_url(email, options = {})
@@ -24,10 +26,9 @@ module Forem
     def default_gravatar
       image = Forem.default_gravatar_image
 
-      case
-      when image && URI(image).absolute?
+      if image && URI(image).absolute?
         image
-      when image
+      elsif image
         request.protocol +
           request.host_with_port +
           path_to_image(image, skip_pipeline: true)

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'cancan'
 
 module Forem
@@ -12,11 +14,11 @@ module Forem
     # the +CanCan::Ability+ module.  The registered ability should behave properly as a stand-alone class
     # and therefore should be easy to test in isolation.
     def self.register_ability(ability)
-      self.abilities.add(ability)
+      abilities.add(ability)
     end
 
     def self.remove_ability(ability)
-      self.abilities.delete(ability)
+      abilities.delete(ability)
     end
 
     def initialize(user)
@@ -47,16 +49,16 @@ module Forem
       can :edit_post, Forem::Forum do |forum|
         user.can_edit_forem_posts?(forum)
       end
-      
+
       can :destroy_post, Forem::Forum do |forum|
         user.can_destroy_forem_posts?(forum)
       end
-      
+
       can :moderate, Forem::Forum do |forum|
         user.can_moderate_forem_forum?(forum) || user.forem_admin?
       end
 
-      #include any abilities registered by extensions, etc.
+      # include any abilities registered by extensions, etc.
       Ability.abilities.each do |clazz|
         ability = clazz.send(:new, user)
         @rules = rules + ability.send(:rules)

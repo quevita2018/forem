@@ -1,10 +1,12 @@
+# frozen_string_literal: true
+
 # Thanks to plataformatec/devise
 # The code used to inspire this generator!
 require 'rails/generators'
 module Forem
   module Generators
     class ViewsGenerator < Rails::Generators::Base #:nodoc:
-      source_root File.expand_path("../../../../app/views/forem", __FILE__)
+      source_root File.expand_path('../../../../app/views/forem', __FILE__)
       desc "Used to copy forem's views to your application's views."
 
       def copy_views

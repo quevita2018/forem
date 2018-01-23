@@ -1,7 +1,9 @@
+# frozen_string_literal: true
+
 class AddForemState < ActiveRecord::Migration[5.1]
   def change
     unless column_exists?(user_class, :forem_state)
-      add_column user_class, :forem_state, :string, :default => 'pending_review'
+      add_column user_class, :forem_state, :string, default: 'pending_review'
     end
   end
 

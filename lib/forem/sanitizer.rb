@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'sanitize'
 
 # This is exists so formatters can access it if it so pleases them.

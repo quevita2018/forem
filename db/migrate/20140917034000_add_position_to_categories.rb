@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 class AddPositionToCategories < ActiveRecord::Migration[5.1]
   def change
-    add_column :forem_categories, :position, :integer, :default => 0
+    add_column :forem_categories, :position, :integer, default: 0
   end
 end

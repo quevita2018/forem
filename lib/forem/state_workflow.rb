@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'workflow'
 
 module Forem
@@ -7,12 +9,12 @@ module Forem
         workflow_column :state
         workflow do
           state :pending_review do
-            event :spam,    :transitions_to => :spam
-            event :approve, :transitions_to => :approved
+            event :spam,    transitions_to: :spam
+            event :approve, transitions_to: :approved
           end
           state :spam
           state :approved do
-            event :approve, :transitions_to => :approved
+            event :approve, transitions_to: :approved
           end
         end
       end

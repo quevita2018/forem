@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Forem
   module ForumsHelper
     def topics_count(forum)

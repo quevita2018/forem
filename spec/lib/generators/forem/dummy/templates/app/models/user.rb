@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class User < ActiveRecord::Base
   include Forem::DefaultPermissions
   # Include default devise modules. Others available are:
@@ -5,11 +7,10 @@ class User < ActiveRecord::Base
   devise :database_authenticatable
 
   def to_s
-    fail # to_s should not be called in tests
+    raise # to_s should not be called in tests
   end
 
   def forem_name
     login
   end
-
 end

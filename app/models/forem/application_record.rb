@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Forem
   # a new superclass for all app models
   class ApplicationRecord < ActiveRecord::Base

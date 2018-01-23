@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module ::Forem
   class Engine < Rails::Engine
     isolate_namespace Forem
@@ -14,7 +16,7 @@ module ::Forem
     end
 
     # Precompile any assets included straight in certain pges
-    initializer "forem.assets.precompile", :group => :all do |app|
+    initializer 'forem.assets.precompile', group: :all do |app|
       app.config.assets.precompile += %w[
         forem/admin/members.js
       ]
@@ -34,7 +36,7 @@ rescue LoadError
   begin
     require 'will_paginate'
   rescue LoadError
-   puts "Please add the kaminari or will_paginate gem to your application's Gemfile. The Forem engine needs either kaminari or will_paginate in order to paginate."
-   exit
+    puts "Please add the kaminari or will_paginate gem to your application's Gemfile. The Forem engine needs either kaminari or will_paginate in order to paginate."
+    exit
   end
 end

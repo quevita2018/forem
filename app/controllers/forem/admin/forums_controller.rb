@@ -1,7 +1,9 @@
+# frozen_string_literal: true
+
 module Forem
   module Admin
     class ForumsController < BaseController
-      before_action :find_forum, :only => [:edit, :update, :destroy]
+      before_action :find_forum, only: %i[edit update destroy]
 
       def index
         @forums = Forem::Forum.all
@@ -36,7 +38,7 @@ module Forem
       private
 
       def forum_params
-        params.require(:forum).permit(:category_id, :title, :description, :position, { :moderator_ids => []})
+        params.require(:forum).permit(:category_id, :title, :description, :position, moderator_ids: [])
       end
 
       def find_forum
@@ -44,30 +46,29 @@ module Forem
       end
 
       def create_successful
-        flash[:notice] = t("forem.admin.forum.created")
+        flash[:notice] = t('forem.admin.forum.created')
         redirect_to admin_forums_path
       end
 
       def create_failed
-        flash.now.alert = t("forem.admin.forum.not_created")
-        render :action => "new"
+        flash.now.alert = t('forem.admin.forum.not_created')
+        render action: 'new'
       end
 
       def destroy_successful
-        flash[:notice] = t("forem.admin.forum.deleted")
+        flash[:notice] = t('forem.admin.forum.deleted')
         redirect_to admin_forums_path
       end
 
       def update_successful
-        flash[:notice] = t("forem.admin.forum.updated")
+        flash[:notice] = t('forem.admin.forum.updated')
         redirect_to admin_forums_path
       end
 
       def update_failed
-        flash.now.alert = t("forem.admin.forum.not_updated")
-        render :action => "edit"
+        flash.now.alert = t('forem.admin.forum.not_updated')
+        render action: 'edit'
       end
-
     end
   end
 end

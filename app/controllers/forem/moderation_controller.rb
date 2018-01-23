@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Forem
   class ModerationController < Forem::ApplicationController
     before_action :ensure_moderator_or_admin
@@ -22,9 +24,9 @@ module Forem
       if params[:topic]
         topic = forum.topics.friendly.find(params[:topic_id])
         topic.moderate!(params[:topic][:moderation_option])
-        flash[:notice] = t("forem.topic.moderation.success")
+        flash[:notice] = t('forem.topic.moderation.success')
       else
-        flash[:error] = t("forem.topic.moderation.no_option_selected")
+        flash[:error] = t('forem.topic.moderation.no_option_selected')
       end
       # Redirects the browser to the page that issued the request (the
       # referrer) if possible, otherwise redirects to the provided default
@@ -45,6 +47,5 @@ module Forem
         raise CanCan::AccessDenied
       end
     end
-
   end
 end

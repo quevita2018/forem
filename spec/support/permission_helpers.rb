@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module PermissionHelpers
   def access_denied!
     expect(page.current_path).to eq(root_path)
@@ -6,5 +8,5 @@ module PermissionHelpers
 end
 
 RSpec.configure do |c|
-  c.include PermissionHelpers, :type => :feature
+  c.include PermissionHelpers, type: :feature
 end

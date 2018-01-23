@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Forem
   module ControllerHacks
     def use_forem_routes
@@ -7,6 +9,5 @@ module Forem
 end
 
 RSpec.configure do |c|
-  c.extend Forem::ControllerHacks, :type => :controller
+  c.extend Forem::ControllerHacks, type: :controller
 end
-

@@ -1,28 +1,30 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
-describe "moderation" do
+describe 'moderation' do
   let(:forum) { FactoryBot.create(:forum) }
   let(:user) { FactoryBot.create(:user) }
 
-  context "spam users" do
+  context 'spam users' do
     before do
       sign_in(user)
-      user.update_column(:forem_state, "spam")
+      user.update_column(:forem_state, 'spam')
     end
 
-    it "cannot start a new topic" do
+    it 'cannot start a new topic' do
       visit forum_path(forum)
-      click_link "New topic"
-      flash_alert!("Your account has been flagged for spam. You cannot create a new topic at this time.")
+      click_link 'New topic'
+      flash_alert!('Your account has been flagged for spam. You cannot create a new topic at this time.')
     end
 
-    it "cannot reply to a topic" do
-      topic = FactoryBot.create(:approved_topic, :forum => forum)
+    it 'cannot reply to a topic' do
+      topic = FactoryBot.create(:approved_topic, forum: forum)
       visit forum_topic_path(forum, topic)
-      within(".post") do
-        click_link "Reply"
+      within('.post') do
+        click_link 'Reply'
       end
 
-      flash_alert!("Your account has been flagged for spam. You cannot create a new post at this time.")
+      flash_alert!('Your account has been flagged for spam. You cannot create a new post at this time.')
     end
   end
 end

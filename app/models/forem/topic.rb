@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'friendly_id'
 
 module Forem
@@ -10,55 +12,55 @@ module Forem
     attr_accessor :moderation_option
 
     extend FriendlyId
-    friendly_id :subject, :use => [:slugged, :finders]
+    friendly_id :subject, use: %i[slugged finders]
 
     belongs_to :forum
-    belongs_to :forem_user, :class_name => Forem.user_class.to_s, :foreign_key => :user_id
-    has_many   :subscriptions, :dependent => :destroy
-    has_many   :posts, -> { order "forem_posts.created_at ASC"}, :dependent => :destroy
+    belongs_to :forem_user, class_name: Forem.user_class.to_s, foreign_key: :user_id
+    has_many   :subscriptions, dependent: :destroy
+    has_many   :posts, -> { order 'forem_posts.created_at ASC' }, dependent: :destroy
     accepts_nested_attributes_for :posts
 
-    validates :subject, :presence => true, :length => { maximum: 255 }
-    validates :user, :presence => true
+    validates :subject, presence: true, length: { maximum: 255 }
+    validates :user, presence: true
 
     before_save  :set_first_post_user
     after_create :subscribe_poster
-    after_create :skip_pending_review, :unless => :moderated?
+    after_create :skip_pending_review, unless: :moderated?
 
     class << self
       def visible
-        where(:hidden => false)
+        where(hidden: false)
       end
 
       def by_pinned
-        order('forem_topics.pinned DESC').
-        order('forem_topics.id')
+        order('forem_topics.pinned DESC')
+          .order('forem_topics.id')
       end
 
       def by_most_recent_post
-        order('forem_topics.last_post_at DESC').
-        order('forem_topics.id')
+        order('forem_topics.last_post_at DESC')
+          .order('forem_topics.id')
       end
 
       def by_pinned_or_most_recent_post
-	order('forem_topics.pinned DESC').
-        order('forem_topics.last_post_at DESC').
-        order('forem_topics.id')
+        order('forem_topics.pinned DESC')
+          .order('forem_topics.last_post_at DESC')
+          .order('forem_topics.id')
       end
 
       def pending_review
-        where(:state => 'pending_review')
+        where(state: 'pending_review')
       end
 
       def approved
-        where(:state => 'approved')
+        where(state: 'approved')
       end
 
       def approved_or_pending_review_for(user)
         if user
-          where("forem_topics.state = ? OR " +
-                "(forem_topics.state = ? AND forem_topics.user_id = ?)",
-                 'approved', 'pending_review', user.id)
+          where('forem_topics.state = ? OR ' \
+                '(forem_topics.state = ? AND forem_topics.user_id = ?)',
+                'approved', 'pending_review', user.id)
         else
           approved
         end
@@ -102,7 +104,7 @@ module Forem
 
     def subscribe_user(subscriber_id)
       if subscriber_id && !subscriber?(subscriber_id)
-        subscriptions.create!(:subscriber_id => subscriber_id)
+        subscriptions.create!(subscriber_id: subscriber_id)
       end
     end
 
@@ -119,14 +121,15 @@ module Forem
     end
 
     def subscriptions_for(subscriber_id)
-      subscriptions.where(:subscriber_id => subscriber_id)
+      subscriptions.where(subscriber_id: subscriber_id)
     end
 
     def last_page
-      (self.posts.count.to_f / Forem.per_page.to_f).ceil
+      (posts.count.to_f / Forem.per_page.to_f).ceil
     end
 
     protected
+
     def set_first_post_user
       post = posts.first
       post.user = user

@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 module Forem
   module Admin
     class BaseController < ApplicationController
       layout Forem.layout
-      
+
       before_action :authenticate_forem_admin
 
       def index
@@ -13,8 +15,8 @@ module Forem
 
       def authenticate_forem_admin
         if !forem_user || !forem_user.forem_admin?
-          flash.alert = t("forem.errors.access_denied")
-          redirect_to forums_path #TODO: not positive where to redirect here
+          flash.alert = t('forem.errors.access_denied')
+          redirect_to forums_path # TODO: not positive where to redirect here
         end
       end
     end

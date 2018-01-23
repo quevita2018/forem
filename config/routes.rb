@@ -1,10 +1,12 @@
-Forem::Engine.routes.draw do
-  root :to => "forums#index"
+# frozen_string_literal: true
 
-  resources :categories, :only => [:index, :show]
+Forem::Engine.routes.draw do
+  root to: 'forums#index'
+
+  resources :categories, only: %i[index show]
 
   namespace :admin do
-    root :to => "base#index"
+    root to: 'base#index'
     resources :groups do
       resources :members, only: [:destroy] do
         collection do
@@ -26,18 +28,18 @@ Forem::Engine.routes.draw do
 
     resources :categories
 
-    get 'users/autocomplete', :to => "users#autocomplete", :as => "user_autocomplete"
+    get 'users/autocomplete', to: 'users#autocomplete', as: 'user_autocomplete'
   end
 
-  get '/:forum_id/moderation', :to => "moderation#index", :as => :forum_moderator_tools
+  get '/:forum_id/moderation', to: 'moderation#index', as: :forum_moderator_tools
   # For mass moderation of posts
-  put '/:forum_id/moderate/posts', :to => "moderation#posts", :as => :forum_moderate_posts
+  put '/:forum_id/moderate/posts', to: 'moderation#posts', as: :forum_moderate_posts
   # Moderation of a single topic
-  put '/:forum_id/topics/:topic_id/moderate', :to => "moderation#topic", :as => :moderate_forum_topic
+  put '/:forum_id/topics/:topic_id/moderate', to: 'moderation#topic', as: :moderate_forum_topic
 
-  resources :forums, :only => [:index, :show], :path => "/" do
-    resources :topics, :except => :index do
-      resources :posts, :except => :index
+  resources :forums, only: %i[index show], path: '/' do
+    resources :topics, except: :index do
+      resources :posts, except: :index
       member do
         post :subscribe
         post :unsubscribe

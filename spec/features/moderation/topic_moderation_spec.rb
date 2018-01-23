@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
-describe "moderation" do
-  context" of topics" do
-    let!(:moderator) { FactoryBot.create(:user, :login => "moderator") }
+describe 'moderation' do
+  context' of topics' do
+    let!(:moderator) { FactoryBot.create(:user, login: 'moderator') }
     let!(:group) do
       group = FactoryBot.create(:group)
       group.members << moderator
@@ -11,49 +13,48 @@ describe "moderation" do
     end
 
     let!(:forum) { FactoryBot.create(:forum) }
-    let!(:topic) { FactoryBot.create(:topic, :forum => forum) }
+    let!(:topic) { FactoryBot.create(:topic, forum: forum) }
 
     before do
       forum.moderators << group
       sign_in(moderator)
     end
-    
-    context "moderation tools view" do
+
+    context 'moderation tools view' do
       before do
         visit forum_path(forum)
-        click_link "Moderation Tools"
+        click_link 'Moderation Tools'
       end
-      
-      it "should have 1 post" do
-        expect(page).to have_content("This is a brand new post")
+
+      it 'should have 1 post' do
+        expect(page).to have_content('This is a brand new post')
       end
-      
-      it "should have 1 topic" do
-        expect(page).to have_content("1 topic")
-        within("#topics") do
-          assert find("#topic_1")
-          assert find(".topic")
-          assert find(".odd")
+
+      it 'should have 1 topic' do
+        expect(page).to have_content('1 topic')
+        within('#topics') do
+          assert find('#topic_1')
+          assert find('.topic')
+          assert find('.odd')
         end
       end
 
-      it "should have a link to the topic moderation page" do
-        assert find_link("FIRST TOPIC")
-        click_link("FIRST TOPIC")
+      it 'should have a link to the topic moderation page' do
+        assert find_link('FIRST TOPIC')
+        click_link('FIRST TOPIC')
         assert expect(page.current_path).to match(forum_topic_path(forum, topic))
       end
-
     end
 
-    context "singular moderation" do
-      it "can approve a topic by a new user" do
+    context 'singular moderation' do
+      it 'can approve a topic by a new user' do
         visit forum_topic_path(forum, topic)
-        within("#topic_moderation") do
-          choose "Approve"
-          click_button "Moderate"
+        within('#topic_moderation') do
+          choose 'Approve'
+          click_button 'Moderate'
         end
-        flash_notice!("The selected topic has been moderated.")
-        expect(page).not_to have_content("This topic is currently pending review.")
+        flash_notice!('The selected topic has been moderated.')
+        expect(page).not_to have_content('This topic is currently pending review.')
       end
     end
   end

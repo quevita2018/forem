@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 module Forem
   class PostsController < Forem::ApplicationController
     before_action :authenticate_forem_user, except: :show
     before_action :find_topic
-    before_action :reject_locked_topic!, only: [:new, :create]
+    before_action :reject_locked_topic!, only: %i[new create]
 
     def show
       find_post
@@ -20,7 +22,7 @@ module Forem
       if params[:quote] && @reply_to_post
         @post.text = view_context.forem_quote(@reply_to_post.text)
       elsif params[:quote] && !@reply_to_post
-        flash[:notice] = t("forem.post.cannot_quote_deleted_post")
+        flash[:notice] = t('forem.post.cannot_quote_deleted_post')
         redirect_to [@topic.forum, @topic]
       end
     end
@@ -57,8 +59,8 @@ module Forem
       authorize_destroy_post_for_forum!
       find_post
       unless @post.owner_or_admin? forem_user
-        flash[:alert] = t("forem.post.cannot_delete")
-        redirect_to [@topic.forum, @topic] and return
+        flash[:alert] = t('forem.post.cannot_delete')
+        redirect_to([@topic.forum, @topic]) && return
       end
       @post.destroy
       destroy_successful
@@ -83,34 +85,34 @@ module Forem
     end
 
     def create_successful
-      flash[:notice] = t("forem.post.created")
+      flash[:notice] = t('forem.post.created')
       redirect_to forum_topic_url(@topic.forum, @topic, pagination_param => @topic.last_page)
     end
 
     def create_failed
       params[:reply_to_id] = params[:post][:reply_to_id]
-      flash.now.alert = t("forem.post.not_created")
-      render :action => "new"
+      flash.now.alert = t('forem.post.not_created')
+      render action: 'new'
     end
 
     def destroy_successful
       if @post.topic.posts.count == 0
         @post.topic.destroy
-        flash[:notice] = t("forem.post.deleted_with_topic")
+        flash[:notice] = t('forem.post.deleted_with_topic')
         redirect_to [@topic.forum]
       else
-        flash[:notice] = t("forem.post.deleted")
+        flash[:notice] = t('forem.post.deleted')
         redirect_to [@topic.forum, @topic]
       end
     end
 
     def update_successful
-      redirect_to [@topic.forum, @topic], :notice => t('edited', :scope => 'forem.post')
+      redirect_to [@topic.forum, @topic], notice: t('edited', scope: 'forem.post')
     end
 
     def update_failed
-      flash.now.alert = t("forem.post.not_edited")
-      render :action => "edit"
+      flash.now.alert = t('forem.post.not_edited')
+      render action: 'edit'
     end
 
     def find_topic
@@ -134,8 +136,8 @@ module Forem
 
     def reject_locked_topic!
       if @topic.locked?
-        flash.alert = t("forem.post.not_created_topic_locked")
-        redirect_to [@topic.forum, @topic] and return
+        flash.alert = t('forem.post.not_created_topic_locked')
+        redirect_to([@topic.forum, @topic]) && return
       end
     end
 

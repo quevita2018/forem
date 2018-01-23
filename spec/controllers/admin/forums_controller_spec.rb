@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 describe Forem::Admin::ForumsController do
@@ -8,7 +10,7 @@ describe Forem::Admin::ForumsController do
     allow(controller).to receive_messages current_user: user
   end
 
-  it "forum_params permits all the necessary fields" do
+  it 'forum_params permits all the necessary fields' do
     group = FactoryBot.create(:group)
     category = FactoryBot.create(:category)
 
@@ -30,5 +32,4 @@ describe Forem::Admin::ForumsController do
       }
     }
   end
-
 end

@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 module Forem
   module TopicsHelper
     def link_to_latest_post(topic)
       post = relevant_posts(topic).last
-      text = "#{time_ago_in_words(post.created_at)} #{t("ago_by")} #{post.user.forem_name}"
+      text = "#{time_ago_in_words(post.created_at)} #{t('ago_by')} #{post.user.forem_name}"
       link_to text, forem.forum_topic_path(post.topic.forum, post.topic, :anchor => "post-#{post.id}", pagination_param => topic.last_page)
     end
 
@@ -13,7 +15,7 @@ module Forem
 
         if forum_view
           if topic_view.nil? && topic.created_at > forum_view.past_viewed_at
-            content_tag :super, "New"
+            content_tag :super, 'New'
           end
         end
       end
@@ -31,10 +33,9 @@ module Forem
     end
 
     def post_time_tag(post)
-      content_tag("time", datetime: post.created_at.to_s(:db)) do
+      content_tag('time', datetime: post.created_at.to_s(:db)) do
         "#{time_ago_in_words(post.created_at)} #{t(:ago)}"
       end
     end
-
   end
 end

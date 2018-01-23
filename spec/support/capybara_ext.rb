@@ -1,17 +1,19 @@
+# frozen_string_literal: true
+
 module CapybaraExt
   # login helper
   def sign_in(user)
-    page.driver.post "/users/sign_in", :user => {
-      :email => user.email, :password => user.password
+    page.driver.post '/users/sign_in', user: {
+      email: user.email, password: user.password
     }
   end
 
   def sign_out
-    page.driver.delete "/users/sign_out"
+    page.driver.delete '/users/sign_out'
   end
 
   # Just a shorter way of writing it.
-  def assert_seen(text, opts={})
+  def assert_seen(text, opts = {})
     if opts[:within]
       within(selector_for(opts[:within])) do
         expect(page).to have_content(text)
@@ -26,13 +28,13 @@ module CapybaraExt
   end
 
   def flash_alert!(text)
-    within(".alert") do
+    within('.alert') do
       assert_seen(text)
     end
   end
 
   def flash_notice!(text)
-    within(".notice") do
+    within('.notice') do
       assert_seen(text)
     end
   end
@@ -40,29 +42,29 @@ module CapybaraExt
   def selector_for(identifier)
     case identifier
     when :forum_header
-      "#forum h2"
+      '#forum h2'
     when :forum_description
-      "#forum .description"
+      '#forum .description'
     when :topic_header
-      "#topic h2"
+      '#topic h2'
     when :topic_menu
-      "#topic #menu"
+      '#topic #menu'
     when :post_text
-      "#posts .post"
+      '#posts .post'
     when :post_user
-      "#posts .post .user"
+      '#posts .post .user'
     when :first_post
-      "#posts #post_1"
+      '#posts #post_1'
     when :second_post
-      "#posts #post_2"
+      '#posts #post_2'
     when :post_actions
       "#{selector_for(:first_post)} .actions"
     when :topic_moderation
-      "#topic .moderation"
+      '#topic .moderation'
     when :post_moderation
-      ".post .moderation"
+      '.post .moderation'
     when :started_by
-      ".started-by"
+      '.started-by'
     else
       skip "No selector defined for #{identifier}. Please define one in spec/support/capybara_ext.rb"
     end
@@ -75,5 +77,5 @@ module CapybaraExt
 end
 
 RSpec.configure do |config|
-  config.include CapybaraExt, :type => :feature
+  config.include CapybaraExt, type: :feature
 end

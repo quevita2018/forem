@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 require 'timecop'
 
@@ -6,133 +8,133 @@ describe Forem::Topic do
     FactoryBot.create(:topic)
   end
 
-  it "is valid with valid attributes" do
+  it 'is valid with valid attributes' do
     expect(topic).to be_valid
   end
 
-  context "creation" do
-    it "is automatically pending review" do
+  context 'creation' do
+    it 'is automatically pending review' do
       expect(topic).to be_pending_review
     end
   end
 
-  context "deletion" do
-    it "deletes posts" do
-      FactoryBot.create(:post, :topic => topic)
+  context 'deletion' do
+    it 'deletes posts' do
+      FactoryBot.create(:post, topic: topic)
       topic.reload
       topic.destroy
-      expect(Forem::Post.exists?(:topic_id => topic.id)).to be false
+      expect(Forem::Post.exists?(topic_id: topic.id)).to be false
     end
 
-    it "deletes views" do
-      FactoryBot.create(:topic_view, :viewable => topic)
+    it 'deletes views' do
+      FactoryBot.create(:topic_view, viewable: topic)
       topic.destroy
-      expect(Forem::View.exists?(:viewable_id => topic.id)).to be false
+      expect(Forem::View.exists?(viewable_id: topic.id)).to be false
     end
 
-    it "deletes subscriptions" do
-      FactoryBot.create(:subscription, :topic => topic)
+    it 'deletes subscriptions' do
+      FactoryBot.create(:subscription, topic: topic)
       topic.destroy
-      expect(Forem::Subscription.exists?(:topic_id => topic.id)).to be false
+      expect(Forem::Subscription.exists?(topic_id: topic.id)).to be false
     end
-  end  
+  end
 
-  describe "validations" do
-    it "requires a subject" do
+  describe 'validations' do
+    it 'requires a subject' do
       topic.subject = nil
       expect(topic).not_to be_valid
     end
 
-    it "requires a subject not too long" do
+    it 'requires a subject not too long' do
       topic.subject = 'x' * 256
       expect(topic).not_to be_valid
     end
   end
 
-  describe "pinning" do
-    it "should show pinned topics up top" do
+  describe 'pinning' do
+    it 'should show pinned topics up top' do
       ordering = Forem::Topic.by_pinned.order_values
-      expect(ordering).to include("forem_topics.pinned DESC")
+      expect(ordering).to include('forem_topics.pinned DESC')
     end
   end
 
-  describe "approving" do
-    let(:unapproved_topic) { FactoryBot.create(:topic, :user => FactoryBot.create(:user)) }
+  describe 'approving' do
+    let(:unapproved_topic) { FactoryBot.create(:topic, user: FactoryBot.create(:user)) }
 
-    it "switches pending review status" do
+    it 'switches pending review status' do
       allow_any_instance_of(Forem::Post).to receive(:subscribe_replier)
       unapproved_topic.approve!
       expect(unapproved_topic.posts.by_created_at.first).not_to be_pending_review
     end
   end
 
-  describe ".by_most_recent_post" do
-    it "should show topics by most recent post" do
+  describe '.by_most_recent_post' do
+    it 'should show topics by most recent post' do
       ordering = Forem::Topic.by_most_recent_post.order_values
-      expect(ordering).to include("forem_topics.last_post_at DESC")
+      expect(ordering).to include('forem_topics.last_post_at DESC')
     end
   end
 
-  describe ".by_pinned_or_most_recent_post" do
-    it "should show topics by pinned then by most recent post" do
+  describe '.by_pinned_or_most_recent_post' do
+    it 'should show topics by pinned then by most recent post' do
       ordering = Forem::Topic.by_pinned_or_most_recent_post.order_values
-      expect(ordering).to eq(["forem_topics.pinned DESC", "forem_topics.last_post_at DESC", "forem_topics.id"]) 
+      expect(ordering).to eq(['forem_topics.pinned DESC', 'forem_topics.last_post_at DESC', 'forem_topics.id'])
     end
   end
 
-  describe ".set_first_post_user" do
-    it "should handle deleted user" do
+  describe '.set_first_post_user' do
+    it 'should handle deleted user' do
       topic.user_id = nil
       topic.save
     end
   end
 
-  describe "helper methods" do
-    describe "#subscribe_user" do
+  describe 'helper methods' do
+    describe '#subscribe_user' do
       let(:subscription_user) { FactoryBot.create(:user) }
-      it "subscribes a user to the topic" do
+      it 'subscribes a user to the topic' do
         topic.subscribe_user(subscription_user.id)
         expect(topic.subscriptions.last.subscriber).to eq(subscription_user)
       end
 
-      it "only subscribes users once" do
-        expect {
+      it 'only subscribes users once' do
+        expect do
           2.times { topic.subscribe_user(subscription_user.id) }
-        }.to change(topic.subscriptions, :count).by(1)
+        end.to change(topic.subscriptions, :count).by(1)
       end
     end
 
-    describe "#register_view_by" do
+    describe '#register_view_by' do
       let!(:view_user) { FactoryBot.create(:user) }
 
-      it "increments the overall topic view count" do
-        expect {
+      it 'increments the overall topic view count' do
+        expect do
           topic.register_view_by(view_user)
-        }.to change(topic, :views_count).by(1)
+        end.to change(topic, :views_count).by(1)
       end
 
-      it "increments the users view count for the topic" do
-        topic.views.create(:user => view_user, :count => 1)
-        expect {
+      it 'increments the users view count for the topic' do
+        topic.views.create(user: view_user, count: 1)
+        expect do
           topic.register_view_by(view_user)
-        }.to change { topic.view_for(view_user).count }.from(1).to(2)
+        end.to change { topic.view_for(view_user).count }.from(1).to(2)
       end
 
       it "doesn't update the view time if less than 15 minutes ago" do
         frozen_time = 1.minute.ago
         Timecop.freeze(frozen_time) do
-          topic.views.create :user => view_user
+          topic.views.create user: view_user
         end
         topic.register_view_by(view_user)
 
         expect(topic.view_for(view_user).current_viewed_at.to_i).to eq(frozen_time.to_i)
       end
 
-      it "does update the view time if more than 15 minutes ago" do
-        frozen_time = Time.parse("03/01/2012 10:00")
+      it 'does update the view time if more than 15 minutes ago' do
+        frozen_time = Time.parse('03/01/2012 10:00')
         Timecop.freeze(frozen_time) do
           last_hour = 1.hour.ago.utc
-          topic.views.create(:user => view_user, :current_viewed_at => last_hour)
+          topic.views.create(user: view_user, current_viewed_at: last_hour)
         end
 
         Timecop.freeze(Time.now) do

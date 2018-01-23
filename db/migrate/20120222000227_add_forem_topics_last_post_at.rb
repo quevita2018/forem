@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AddForemTopicsLastPostAt < ActiveRecord::Migration[5.1]
   def up
     add_column :forem_topics, :last_post_at, :datetime

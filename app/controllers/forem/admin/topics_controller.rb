@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Forem
   module Admin
     class TopicsController < BaseController
@@ -5,18 +7,18 @@ module Forem
 
       def update
         if @topic.update_attributes(topic_params)
-          flash[:notice] = t("forem.topic.updated")
+          flash[:notice] = t('forem.topic.updated')
           redirect_to forum_topic_path(@topic.forum, @topic)
         else
-          flash.alert = t("forem.topic.not_updated")
-          render :action => "edit"
+          flash.alert = t('forem.topic.not_updated')
+          render action: 'edit'
         end
       end
 
       def destroy
         forum = @topic.forum
         @topic.destroy
-        flash[:notice] = t("forem.topic.deleted")
+        flash[:notice] = t('forem.topic.deleted')
         redirect_to forum_topics_path(forum)
       end
 
@@ -40,13 +42,13 @@ module Forem
 
       private
 
-        def topic_params
-          params.require(:topic).permit(:subject, :forum_id, :locked, :pinned, :hidden)
-        end
+      def topic_params
+        params.require(:topic).permit(:subject, :forum_id, :locked, :pinned, :hidden)
+      end
 
-        def find_topic
-          @topic = Forem::Topic.friendly.find(params[:id])
-        end
+      def find_topic
+        @topic = Forem::Topic.friendly.find(params[:id])
+      end
     end
   end
 end

@@ -1,7 +1,9 @@
+# frozen_string_literal: true
+
 module Forem
   module Admin
     class CategoriesController < BaseController
-      before_action :find_category, :only => [:edit, :update, :destroy]
+      before_action :find_category, only: %i[edit update destroy]
 
       def index
         @categories = Forem::Category.by_position
@@ -43,30 +45,29 @@ module Forem
       end
 
       def create_successful
-        flash[:notice] = t("forem.admin.category.created")
+        flash[:notice] = t('forem.admin.category.created')
         redirect_to admin_categories_path
       end
 
       def create_failed
-        flash.now.alert = t("forem.admin.category.not_created")
-        render :action => "new"
+        flash.now.alert = t('forem.admin.category.not_created')
+        render action: 'new'
       end
 
       def destroy_successful
-        flash[:notice] = t("forem.admin.category.deleted")
+        flash[:notice] = t('forem.admin.category.deleted')
         redirect_to admin_categories_path
       end
 
       def update_successful
-        flash[:notice] = t("forem.admin.category.updated")
+        flash[:notice] = t('forem.admin.category.updated')
         redirect_to admin_categories_path
       end
 
       def update_failed
-        flash.now.alert = t("forem.admin.category.not_updated")
-        render :action => "edit"
+        flash.now.alert = t('forem.admin.category.not_updated')
+        render action: 'edit'
       end
-
     end
   end
 end

@@ -1,5 +1,5 @@
-class FakeController < ApplicationController
-  def sign_in
+# frozen_string_literal: true
 
-  end
+class FakeController < ApplicationController
+  def sign_in; end
 end

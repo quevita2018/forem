@@ -1,9 +1,11 @@
+# frozen_string_literal: true
+
 class AddForemViewFields < ActiveRecord::Migration[5.1]
   def up
     add_column :forem_views, :current_viewed_at, :datetime
     add_column :forem_views, :past_viewed_at, :datetime
-    add_column :forem_topics, :views_count, :integer, :default=>0
-    add_column :forem_forums, :views_count, :integer, :default=>0
+    add_column :forem_topics, :views_count, :integer, default: 0
+    add_column :forem_forums, :views_count, :integer, default: 0
 
     Forem::Topic.find_each do |topic|
       topic.update_column(:views_count, topic.views.sum(:count))

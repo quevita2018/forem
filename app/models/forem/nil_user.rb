@@ -1,11 +1,13 @@
+# frozen_string_literal: true
+
 module Forem
   class NilUser < Forem.user_class
     def forem_email
-      "nobody@example.com"
+      'nobody@example.com'
     end
 
     def forem_name
-      "[deleted]"
+      '[deleted]'
     end
   end
 end

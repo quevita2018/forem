@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Forem
   class Post < ApplicationRecord
     include Workflow
@@ -8,24 +10,24 @@ module Forem
     attr_accessor :moderation_option
 
     belongs_to :topic
-    belongs_to :forem_user, :class_name => Forem.user_class.to_s, :foreign_key => :user_id
-    belongs_to :reply_to, :class_name => "Post"
+    belongs_to :forem_user, class_name: Forem.user_class.to_s, foreign_key: :user_id
+    belongs_to :reply_to, class_name: 'Post'
 
-    has_many :replies, :class_name  => "Post",
-                       :foreign_key => "reply_to_id",
-                       :dependent   => :nullify
+    has_many :replies, class_name: 'Post',
+                       foreign_key: 'reply_to_id',
+                       dependent: :nullify
 
-    validates :text, :presence => true
+    validates :text, presence: true
 
-    delegate :forum, :to => :topic
+    delegate :forum, to: :topic
 
     after_create :set_topic_last_post_at
-    after_create :subscribe_replier, :if => :user_auto_subscribe?
+    after_create :subscribe_replier, if: :user_auto_subscribe?
     after_create :skip_pending_review
 
     class << self
       def approved
-        where(:state => "approved")
+        where(state: 'approved')
       end
 
       def approved_or_pending_review_for(user)
@@ -33,7 +35,7 @@ module Forem
           state_column = "#{Post.table_name}.state"
           where("#{state_column} = 'approved' OR
             (#{state_column} = 'pending_review' AND #{Post.table_name}.user_id = :user_id)",
-            user_id: user.id)
+                user_id: user.id)
         else
           approved
         end
@@ -44,19 +46,19 @@ module Forem
       end
 
       def pending_review
-        where :state => 'pending_review'
+        where state: 'pending_review'
       end
 
       def spam
-        where :state => 'spam'
+        where state: 'spam'
       end
 
       def visible
-        joins(:topic).where(:forem_topics => { :hidden => false })
+        joins(:topic).where(forem_topics: { hidden: false })
       end
 
       def topic_not_pending_review
-        joins(:topic).where(:forem_topics => { :state => 'approved'})
+        joins(:topic).where(forem_topics: { state: 'approved' })
       end
 
       def moderate!(posts)
@@ -79,9 +81,7 @@ module Forem
     protected
 
     def subscribe_replier
-      if topic && user
-        topic.subscribe_user(user.id)
-      end
+      topic.subscribe_user(user.id) if topic && user
     end
 
     # Called when a post is approved.
@@ -103,16 +103,15 @@ module Forem
     end
 
     def skip_pending_review
-      approve! unless user && user.forem_moderate_posts?
+      approve! unless user&.forem_moderate_posts?
     end
 
     def approve_user
-      user.update_column(:forem_state, "approved") if user && user.forem_state != "approved"
+      user.update_column(:forem_state, 'approved') if user && user.forem_state != 'approved'
     end
 
     def spam
-      user.update_column(:forem_state, "spam") if user
+      user&.update_column(:forem_state, 'spam')
     end
-
   end
 end

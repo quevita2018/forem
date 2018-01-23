@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'active_support/concern'
 
 module Forem
@@ -6,7 +8,7 @@ module Forem
       extend ActiveSupport::Concern
 
       included do
-        has_many :views, :as => :viewable, :dependent => :destroy
+        has_many :views, as: :viewable, dependent: :destroy
       end
 
       def view_for(user)

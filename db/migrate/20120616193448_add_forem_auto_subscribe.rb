@@ -1,7 +1,9 @@
+# frozen_string_literal: true
+
 class AddForemAutoSubscribe < ActiveRecord::Migration[5.1]
   def change
     unless column_exists?(user_class, :forem_auto_subscribe)
-      add_column user_class, :forem_auto_subscribe, :boolean, :default => false
+      add_column user_class, :forem_auto_subscribe, :boolean, default: false
     end
   end
 
