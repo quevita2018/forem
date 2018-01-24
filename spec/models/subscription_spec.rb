@@ -37,16 +37,8 @@ describe Forem::Subscription do
       subscription.send_notification(1)
     end
 
-    it 'should send a notification via deliver_later when method available' do
-      expect_any_instance_of(mail_class).to_not receive(:deliver)
-      expect_any_instance_of(mail_class).to receive(:deliver_later)
-      subscription.send_notification(1)
-    end
-
-    it 'should send a notification via deliver when deliver_later not available' do
-      allow_any_instance_of(mail_class).to receive(:respond_to?).with(:deliver_later).and_return(false)
-      expect_any_instance_of(mail_class).to_not receive(:deliver_later)
-      expect_any_instance_of(mail_class).to receive(:deliver)
+    it 'should send a notification' do
+      expect_any_instance_of(mail_class).to receive(:deliver_now)
       subscription.send_notification(1)
     end
   end
