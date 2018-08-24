@@ -31,7 +31,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'friendly_id', '~> 5.2.3'
   s.add_dependency 'gemoji', '~> 3.0.0'
   s.add_dependency 'rails', '~> 5.1.4'
-  s.add_dependency 'sanitize', '~> 4.5.0'
+  s.add_dependency 'sanitize', '>= 4.6.3'
   s.add_dependency 'select2-rails', '~> 3.5.10'
   s.add_dependency 'simple_form', '~> 3.5.0'
   s.add_dependency 'workflow', '~> 1.2.0'

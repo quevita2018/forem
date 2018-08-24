@@ -16,7 +16,7 @@ end
 
 group :test do
   platforms :ruby, :mingw do
-    gem 'forem-redcarpet'
+    gem 'forem-redcarpet', github: 'quevita2018/forem-redcarpet'
     gem 'mysql2'
     gem 'pg'
     gem 'sqlite3'
